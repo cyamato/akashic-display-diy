@@ -1,0 +1,5 @@
+node_modules/
+coverage/
+dist/
+io.github.cyamato.akashicbusy.sdPlugin/bin/
+io.github.cyamato.akashicbusy.sdPlugin/logs/

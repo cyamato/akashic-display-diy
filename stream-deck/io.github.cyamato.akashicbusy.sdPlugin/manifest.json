@@ -1,0 +1,66 @@
+{
+  "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+  "Name": "Akashic Display Busy",
+  "Version": "0.1.0.0",
+  "Author": "Craig Yamato",
+  "Description": "Set your Akashic Display room, such as a home office busy light, to Busy, On the Phone, In a Meeting, Available or Auto, and see its state on your keys. Use at your own risk; no warranty.",
+  "UUID": "io.github.cyamato.akashicbusy",
+  "Icon": "imgs/plugin/marketplace",
+  "Category": "Akashic Display Busy",
+  "CategoryIcon": "imgs/plugin/category",
+  "CodePath": "bin/plugin.js",
+  "SDKVersion": 3,
+  "Software": {
+    "MinimumVersion": "7.1"
+  },
+  "OS": [
+    {
+      "Platform": "mac",
+      "MinimumVersion": "12"
+    },
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Nodejs": {
+    "Version": "24",
+    "Debug": "disabled"
+  },
+  "Actions": [
+    {
+      "Name": "Set Status",
+      "UUID": "io.github.cyamato.akashicbusy.set",
+      "Icon": "imgs/actions/set",
+      "Tooltip": "Sets your room to one state, and lights up while it's in that state.",
+      "PropertyInspectorPath": "ui/set-status.html",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/actions/key",
+          "TitleAlignment": "bottom",
+          "FontSize": 11
+        }
+      ]
+    },
+    {
+      "Name": "Toggle",
+      "UUID": "io.github.cyamato.akashicbusy.toggle",
+      "Icon": "imgs/actions/toggle",
+      "Tooltip": "Shows your room's state; each press steps to the next.",
+      "PropertyInspectorPath": "ui/toggle.html",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/actions/key",
+          "TitleAlignment": "bottom",
+          "FontSize": 11
+        }
+      ]
+    }
+  ]
+}
