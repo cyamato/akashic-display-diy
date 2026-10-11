@@ -28,6 +28,7 @@ display inputs, outputs and an LED strip.
 | E-paper door sign | [`inky-pi`](inky-pi) | A Pimoroni Inky Impression 7.3" on a Raspberry Pi Zero 2 W (Python). Changes within seconds; four buttons; an optional WS2812 light bar. |
 | Battery e-paper sign | [`inky-frame`](inky-frame) | A Pimoroni Inky Frame 7.3" (MicroPython). Wakes every few minutes or on a button, on a LiPo or AA batteries. |
 | Serial inputs, outputs and LED strip | [`serial-io`](serial-io) | An Arduino sketch for an ESP32, Raspberry Pi Pico or Arduino Nano ESP32, plugged into a display by USB: dry-contact inputs, a relay or buzzer, and an RGB strip. |
+| Stream Deck keys | [`stream-deck`](stream-deck) | An Elgato Stream Deck plugin: keys for Busy, On the Phone, In a Meeting, Available and Auto that light up with your room's state. |
 
 Guides:
 - [DIY e-ink displays](docs/e-ink-displays.md): parts, wiring, install and battery mode for both e-paper builds.
@@ -46,8 +47,9 @@ shows. Use your server's address wherever the guides say `https://<server>` or
 ./test.sh
 ```
 
-It runs the Python tests for both e-paper builds (needs [uv](https://docs.astral.sh/uv/))
-and builds and runs the serial sketch's tests against a stand-in Arduino (needs `g++`).
+It runs the Python tests for both e-paper builds (needs [uv](https://docs.astral.sh/uv/)),
+builds and runs the serial sketch's tests against a stand-in Arduino (needs `g++`), and
+tests, builds and validates the Stream Deck plugin (needs Node.js 20.5 or later).
 
 ## Contributing
 

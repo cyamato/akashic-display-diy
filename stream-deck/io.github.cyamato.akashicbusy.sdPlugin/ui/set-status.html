@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Set Status</title>
+    <!-- Elgato's property inspector components, as in Elgato's own plugin template. -->
+    <script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+    <style>.help { margin: 4px 8px 8px; font-size: 9pt; color: #969696; }</style>
+  </head>
+  <body>
+    <sdpi-item label="Sets">
+      <sdpi-select setting="state" default="busy">
+        <option value="busy">Busy</option>
+        <option value="phone">On the Phone</option>
+        <option value="meeting">In a Meeting</option>
+        <option value="free">Available</option>
+        <option value="auto">Auto (follow the calendar)</option>
+      </sdpi-select>
+    </sdpi-item>
+    <sdpi-item label="For">
+      <sdpi-select setting="minutes" value-type="number" default="60">
+        <option value="15">15 minutes</option>
+        <option value="30">30 minutes</option>
+        <option value="60">1 hour</option>
+        <option value="120">2 hours</option>
+        <option value="240">4 hours</option>
+        <option value="480">8 hours</option>
+      </sdpi-select>
+    </sdpi-item>
+    <sdpi-item label="Server">
+      <sdpi-textfield setting="server" global placeholder="https://dash.example.com" required></sdpi-textfield>
+    </sdpi-item>
+    <sdpi-item label="Status Key">
+      <sdpi-password setting="key" global placeholder="pds_…" required></sdpi-password>
+    </sdpi-item>
+    <p class="help">The server and key are shared by every key. Make the room's status key in /admin → Rooms. It can change your room, so keep it private.</p>
+  </body>
+</html>
