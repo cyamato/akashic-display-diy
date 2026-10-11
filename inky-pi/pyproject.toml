@@ -1,0 +1,35 @@
+[project]
+name = "pdinky"
+version = "0.1.0"
+description = "Akashic Display on a Raspberry Pi with an Inky Impression e-ink display"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = ["pillow>=10.1", "requests>=2.31"]
+
+[project.optional-dependencies]
+# On the Pi: the display, the buttons and the light bar.
+pi = ["inky[rpi]>=2.0", "gpiozero>=2.0", "rpi-ws281x>=5.0"]
+test = ["pytest>=8", "pytest-cov>=5"]
+
+[project.scripts]
+pdinky = "pdinky.__main__:main"
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["pdinky"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["pdinky"]
+branch = true
+# The Pi's hardware (the Inky, GPIO buttons, the LED strip) and the wiring that starts it.
+omit = ["pdinky/hardware.py", "pdinky/__main__.py"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = ["if __name__ == .__main__.:"]

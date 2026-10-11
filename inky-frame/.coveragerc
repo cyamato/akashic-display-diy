@@ -1,0 +1,8 @@
+[run]
+# main.py drives the Inky Frame's hardware (Wi-Fi, PicoGraphics, buttons, sleep): MicroPython only.
+source = .
+omit = main.py, tests/*
+branch = true
+
+[report]
+show_missing = true

@@ -1,0 +1,31 @@
+# Akashic Display on an Inky Impression: /etc/akashic-display/inky.toml
+server = "https://dash.example.com"
+# live: plugged in, always on. battery: Witty Pi wakes it, it draws, it powers off.
+mode = "live"
+# Optional: the display's time zone and clock (default: its layout's home, 24-hour).
+time_zone = "Pacific/Auckland"
+clock = 24
+# How it introduces itself when asking for a code.
+label = "Inky Impression"
+location = "Office door"
+# The room's status key (pds_...) from /admin -> Rooms, so the buttons can say busy or free.
+# Leave empty for a display that only shows.
+room_key = ""
+busy_minutes = 60
+refresh_seconds = 60
+# battery mode: power off after drawing.
+shutdown = true
+
+[lights]
+# A WS2812 strip along the top, on GPIO 18 (free next to the Inky). 5 V, data through a
+# 330 Ω resistor; power a long strip separately from the Pi.
+enabled = false
+pin = 18
+count = 8
+brightness = 0.3
+
+[buttons]
+# Inky Impression 7.3" buttons A-D are GPIO 5, 6, 16 and 24.
+enabled = true
+pins = [5, 6, 16, 24]
+actions = ["busy", "free", "auto", "refresh"]

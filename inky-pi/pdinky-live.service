@@ -1,0 +1,12 @@
+[Unit]
+Description=Akashic Display on the Inky Impression (always on)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/opt/pdinky/bin/python -m pdinky --config /etc/akashic-display/inky.toml
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

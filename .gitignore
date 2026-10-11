@@ -1,0 +1,8 @@
+# Your Wi-Fi password and keys stay on the device.
+inky-frame/secrets.py
+inky-pi/inky.toml
+__pycache__/
+.pytest_cache/
+.coverage
+coverage/
+*.egg-info/
