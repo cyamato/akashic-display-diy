@@ -1,7 +1,7 @@
 # Everything Presence One (EP1) for Akashic Display
 
 > [!WARNING]
-> **Use at your own risk; there is no warranty of any kind.** It hasn't been tried on a real EP1 yet; the configuration validates with ESPHome.
+> **Use at your own risk; there is no warranty of any kind.** It hasn't been tried on a real EP1 yet; the configuration validates and compiles with ESPHome 2026.9.
 
 The EP1 (Everything Smart Technology) runs ESPHome. It combines mmWave radar and a PIR
 sensor into one **Occupancy** sensor, and measures temperature, humidity and light; the
@@ -49,7 +49,7 @@ optional module adds CO2. Our add-on, the ESPHome package
 (`occupancy`, `temperature_sensor`, `humidity_sensor`, `illuminance_sensor`, and `co2`).
 The EP1's temperature and humidity offsets still apply. It uses the EP1's own HTTPS client,
 so it needs only outgoing HTTPS. Use at your own risk: it is MIT licensed, with no
-warranty, and hasn't been tried on a real EP1 yet. The configuration validates with ESPHome
-2026.9.
+warranty, and hasn't been tried on a real EP1 yet. The configuration validates and compiles
+with ESPHome 2026.9.
 
 Verkada air quality sensors need no hardware work: connect them in /admin → Sites (see the Akashic Display user guide).
