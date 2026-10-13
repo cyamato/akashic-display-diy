@@ -1,0 +1,102 @@
+# Akashic Display for the Everything Presence One (EP1).
+#
+# Adds two things to the EP1's own firmware, both sent to your Akashic Display server:
+# - the room: busy while the EP1 sees someone (renewed every 5 minutes, so it lapses if the
+#   EP1 goes offline) and back to its calendar when they leave. Room signs show it at once.
+# - the site's readings every minute: temperature, humidity, light (and CO2 with the CO2
+#   module), for media-panel conditions such as `site.temperature > 26`.
+# The EP1 detects that someone is there; it doesn't count people.
+#
+# In your EP1's ESPHome configuration (after adopting it in the ESPHome dashboard), add:
+#
+#   substitutions:
+#     akashic_server: "https://dash.example.com"
+#     akashic_room_key: !secret akashic_room_key      # /admin → Rooms → the room's status key
+#     akashic_sensor_key: !secret akashic_sensor_key  # /admin → Sites → New Sensor Key
+#     # With the CO2 module:
+#     # akashic_extra_readings: 'add("co2", id(co2).state);'
+#   packages:
+#     akashic: github://cyamato/akashic-display-diy/esphome/everything-presence-one.yaml@main
+#
+# and the two keys to secrets.yaml. Leave either key empty to skip that part.
+# MIT licence; use at your own risk, no warranty.
+
+substitutions:
+  akashic_server: "https://dash.example.com"
+  akashic_room_key: ""
+  akashic_sensor_key: ""
+  akashic_busy_minutes: "15"
+  akashic_readings_interval: "60s"
+  akashic_extra_readings: ""
+
+globals:
+  # What the room was last told: -1 nothing (or it failed), 0 free, 1 busy; and when.
+  - id: akashic_room_sent
+    type: int
+    restore_value: no
+    initial_value: "-1"
+  - id: akashic_room_at
+    type: uint32_t
+    restore_value: no
+    initial_value: "0"
+
+interval:
+  - interval: 5s
+    then:
+      - if:
+          condition:
+            lambda: |-
+              if (std::string("${akashic_room_key}").empty() || !network::is_connected()) return false;
+              const int now = id(occupancy).state ? 1 : 0;
+              const bool renew = now == 1 && millis() - id(akashic_room_at) > 300000;
+              return now != id(akashic_room_sent) || renew;
+          then:
+            - lambda: |-
+                id(akashic_room_sent) = id(occupancy).state ? 1 : 0;
+                id(akashic_room_at) = millis();
+            - http_request.send:
+                method: PUT
+                url: "${akashic_server}/v1/rooms/status"
+                request_headers:
+                  Authorization: "Bearer ${akashic_room_key}"
+                  Content-Type: application/json
+                body: !lambda |-
+                  return id(akashic_room_sent) == 1
+                    ? std::string("{\"state\":\"busy\",\"minutes\":${akashic_busy_minutes}}")
+                    : std::string("{\"state\":\"auto\"}");
+                on_response:
+                  then:
+                    - lambda: |-
+                        // Try again in 5 seconds if the server didn't take it.
+                        if (response->status_code >= 300) id(akashic_room_sent) = -1;
+                on_error:
+                  then:
+                    - lambda: "id(akashic_room_sent) = -1;"
+
+  - interval: ${akashic_readings_interval}
+    then:
+      - if:
+          condition:
+            lambda: |-
+              return !std::string("${akashic_sensor_key}").empty() && network::is_connected()
+                && !std::isnan(id(temperature_sensor).state);
+          then:
+            - http_request.send:
+                method: PUT
+                url: "${akashic_server}/v1/sites/readings"
+                request_headers:
+                  Authorization: "Bearer ${akashic_sensor_key}"
+                  Content-Type: application/json
+                body: !lambda |-
+                  std::string b = "{";
+                  auto add = [&](const char *name, float v) {
+                    if (std::isnan(v)) return;
+                    char buf[48];
+                    snprintf(buf, sizeof buf, "%s\"%s\":%.2f", b.size() > 1 ? "," : "", name, v);
+                    b += buf;
+                  };
+                  add("temperature", id(temperature_sensor).state);
+                  add("humidity", id(humidity_sensor).state);
+                  add("light", id(illuminance_sensor).state);
+                  ${akashic_extra_readings}
+                  return b + "}";

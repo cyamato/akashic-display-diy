@@ -1,0 +1,35 @@
+# A stand-in EP1: the same sensor ids as its firmware, to check the add-on (esphome config).
+substitutions:
+  akashic_server: "https://dash.example.com"
+  akashic_room_key: !secret akashic_room_key
+  akashic_sensor_key: !secret akashic_sensor_key
+  akashic_extra_readings: 'add("co2", id(co2).state);'
+esphome:
+  name: ep1-harness
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+wifi:
+  ssid: test
+  password: testtest
+http_request:
+sensor:
+  - platform: template
+    id: temperature_sensor
+    lambda: return 21.0;
+  - platform: template
+    id: humidity_sensor
+    lambda: return 40.0;
+  - platform: template
+    id: illuminance_sensor
+    lambda: return 100.0;
+  - platform: template
+    id: co2
+    lambda: return 600.0;
+binary_sensor:
+  - platform: template
+    id: occupancy
+    lambda: return true;
+packages:
+  akashic: !include ../everything-presence-one.yaml

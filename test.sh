@@ -8,4 +8,5 @@ mkdir -p coverage
 (cd inky-frame && uv run --quiet --no-project --with pytest --with pytest-cov \
   python -m pytest -q tests --cov --cov-report=xml:../coverage/inky-frame.xml)
 serial-io/test.sh
+sensor-node/test.sh
 (cd stream-deck && npm ci --no-audit --no-fund --silent && npm test && npm run build --silent && npm run validate)

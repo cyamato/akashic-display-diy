@@ -1,8 +1,9 @@
 # Akashic Display DIY
 
-Build your own busy light, door sign or room sign for [Akashic Display](#what-it-works-with):
-code and build guides for e-paper signs and for a small microcontroller that gives any
-display inputs, outputs and an LED strip.
+Build your own busy light, door sign, room sign or shop sensor for
+[Akashic Display](#what-it-works-with): code and build guides for e-paper signs, a small
+microcontroller that gives any display inputs, outputs and an LED strip, and a ceiling
+sensor node that counts people and measures the air.
 
 > [!WARNING]
 > **Use at your own risk. There is no warranty of any kind.**
@@ -29,10 +30,14 @@ display inputs, outputs and an LED strip.
 | Battery e-paper sign | [`inky-frame`](inky-frame) | A Pimoroni Inky Frame 7.3" (MicroPython). Wakes every few minutes or on a button, on a LiPo or AA batteries. |
 | Serial inputs, outputs and LED strip | [`serial-io`](serial-io) | An Arduino sketch for an ESP32, Raspberry Pi Pico or Arduino Nano ESP32, plugged into a display by USB: dry-contact inputs, a relay or buzzer, and an RGB strip. |
 | Stream Deck keys | [`stream-deck`](stream-deck) | An Elgato Stream Deck plugin: keys for Busy, On the Phone, In a Meeting, Available and Auto that light up with your room's state. |
+| Everything Presence One add-on | [`esphome`](esphome) | An ESPHome package for the Everything Presence One (EP1): the room is busy while it sees someone, and it sends the site temperature, humidity, light and CO2. |
+| Shop and café sensor node | [`sensor-node`](sensor-node) | A ceiling node (ESP32-S3 on Wi-Fi, or Olimex ESP32-POE-ISO on PoE) that counts people through one or two doorways (VL53L5CX) and measures CO2, temperature, humidity, particles and light. It reports to the server and answers GraphQL, directly or through a tunnel. Includes a printable case (OpenSCAD). |
 
 Guides:
 - [DIY e-ink displays](docs/e-ink-displays.md): parts, wiring, install and battery mode for both e-paper builds.
 - [Serial devices](docs/serial-devices.md): parts, wiring, the sketch, setting it up, and its line protocol.
+- [Sensor node](docs/sensor-node.md): parts, mounting, wiring, the case, the firewall rule, and its GraphQL endpoint.
+- [Everything Presence One](docs/everything-presence-one.md): adding the ESPHome package to an EP1.
 
 ## What It Works With
 
@@ -48,8 +53,10 @@ shows. Use your server's address wherever the guides say `https://<server>` or
 ```
 
 It runs the Python tests for both e-paper builds (needs [uv](https://docs.astral.sh/uv/)),
-builds and runs the serial sketch's tests against a stand-in Arduino (needs `g++`), and
-tests, builds and validates the Stream Deck plugin (needs Node.js 20.5 or later).
+builds and runs the serial sketch's and the sensor node's tests (needs `g++`), and tests,
+builds and validates the Stream Deck plugin (needs Node.js 20.5 or later). To compile the
+sensor node's firmware for both boards, run `pio run` in `sensor-node` (needs
+[PlatformIO](https://platformio.org)).
 
 ## Contributing
 
