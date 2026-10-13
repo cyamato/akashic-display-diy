@@ -20,3 +20,28 @@ jobs:
           node-version: 24
       - name: Run every build's tests
         run: ./test.sh
+
+  sensor-node-firmware:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install PlatformIO
+        run: pip install platformio
+      - name: Compile the sensor node for both boards (with the example settings)
+        working-directory: sensor-node
+        run: pio run
+
+  everything-presence-one:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install ESPHome
+        run: pip install esphome
+      - name: Validate the EP1 add-on against a stand-in EP1
+        run: esphome config esphome/tests/ep1-harness.yaml
